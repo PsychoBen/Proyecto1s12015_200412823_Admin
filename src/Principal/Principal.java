@@ -10,6 +10,19 @@ package Principal;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.URL;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import org.json.*;
 
 /**
  *
@@ -17,11 +30,15 @@ import java.awt.Toolkit;
  */
 public class Principal extends Mi_Ventana_200412823 {
 
+    public static OkHttpClient webClient = new OkHttpClient();
+    ConectarWebService miConexion;
+    
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
+        miConexion = new ConectarWebService();
     }
 
     /**
@@ -33,14 +50,138 @@ public class Principal extends Mi_Ventana_200412823 {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dialogo_Administrador = new javax.swing.JDialog();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        text_NewAeropuertoNombreAero = new javax.swing.JTextField();
+        text_NewAeropuertoPassword = new javax.swing.JPasswordField();
+        text_NewAeropuertoPais = new javax.swing.JTextField();
+        boton_NewAeropuertoGuardar = new javax.swing.JButton();
+        boton_NewAeropuertoCancelar = new javax.swing.JButton();
         boton_LoginIniciar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        text_LoginClave = new javax.swing.JPasswordField();
-        text_LoginNickName = new javax.swing.JTextField();
+        text_LoginClaveAdministradores = new javax.swing.JPasswordField();
+        text_LoginNombreAdministradores = new javax.swing.JTextField();
         boton_LoginSignUp = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+
+        dialogo_Administrador.setTitle("Nuevo Aeropuerto");
+        dialogo_Administrador.setIconImage(getIconImage());
+        dialogo_Administrador.setMaximumSize(new java.awt.Dimension(457, 300));
+        dialogo_Administrador.setMinimumSize(new java.awt.Dimension(457, 300));
+        dialogo_Administrador.setModal(true);
+        dialogo_Administrador.setResizable(false);
+        dialogo_Administrador.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                dialogo_AdministradorWindowOpened(evt);
+            }
+        });
+
+        jLabel5.setBackground(java.awt.Color.black);
+        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Ingrese los datos");
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Nombre Aeropuerto");
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Password");
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("País");
+
+        text_NewAeropuertoNombreAero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        text_NewAeropuertoNombreAero.setToolTipText("Nombre Aeropuerto");
+
+        text_NewAeropuertoPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        text_NewAeropuertoPassword.setToolTipText("Password");
+
+        text_NewAeropuertoPais.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        text_NewAeropuertoPais.setToolTipText("Pais");
+
+        boton_NewAeropuertoGuardar.setBackground(java.awt.Color.green);
+        boton_NewAeropuertoGuardar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        boton_NewAeropuertoGuardar.setForeground(java.awt.Color.black);
+        boton_NewAeropuertoGuardar.setText("Guardar");
+        boton_NewAeropuertoGuardar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton_NewAeropuertoGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton_NewAeropuertoGuardarActionPerformed(evt);
+            }
+        });
+
+        boton_NewAeropuertoCancelar.setBackground(java.awt.Color.red);
+        boton_NewAeropuertoCancelar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        boton_NewAeropuertoCancelar.setForeground(new java.awt.Color(0, 0, 0));
+        boton_NewAeropuertoCancelar.setText("Cancelar");
+        boton_NewAeropuertoCancelar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton_NewAeropuertoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton_NewAeropuertoCancelarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dialogo_AdministradorLayout = new javax.swing.GroupLayout(dialogo_Administrador.getContentPane());
+        dialogo_Administrador.getContentPane().setLayout(dialogo_AdministradorLayout);
+        dialogo_AdministradorLayout.setHorizontalGroup(
+            dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogo_AdministradorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(dialogo_AdministradorLayout.createSequentialGroup()
+                        .addGroup(dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(text_NewAeropuertoNombreAero)
+                            .addComponent(text_NewAeropuertoPassword)
+                            .addComponent(text_NewAeropuertoPais))))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogo_AdministradorLayout.createSequentialGroup()
+                .addContainerGap(133, Short.MAX_VALUE)
+                .addComponent(boton_NewAeropuertoGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(boton_NewAeropuertoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(118, 118, 118))
+        );
+        dialogo_AdministradorLayout.setVerticalGroup(
+            dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogo_AdministradorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(text_NewAeropuertoNombreAero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(text_NewAeropuertoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(text_NewAeropuertoPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addGroup(dialogo_AdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(boton_NewAeropuertoGuardar)
+                    .addComponent(boton_NewAeropuertoCancelar))
+                .addContainerGap(96, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Controlador de Administradores");
@@ -73,12 +214,12 @@ public class Principal extends Mi_Ventana_200412823 {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("LOGIN");
 
-        text_LoginClave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        text_LoginClave.setToolTipText("Password");
+        text_LoginClaveAdministradores.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        text_LoginClaveAdministradores.setToolTipText("Password");
 
-        text_LoginNickName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        text_LoginNickName.setToolTipText("NickName");
-        text_LoginNickName.setName(""); // NOI18N
+        text_LoginNombreAdministradores.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        text_LoginNombreAdministradores.setToolTipText("NickName");
+        text_LoginNombreAdministradores.setName(""); // NOI18N
 
         boton_LoginSignUp.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         boton_LoginSignUp.setForeground(java.awt.Color.blue);
@@ -108,12 +249,12 @@ public class Principal extends Mi_Ventana_200412823 {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(text_LoginNickName))
+                                .addComponent(text_LoginNombreAdministradores))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(text_LoginClave, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 70, Short.MAX_VALUE))))
+                                .addComponent(text_LoginClaveAdministradores, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -134,13 +275,13 @@ public class Principal extends Mi_Ventana_200412823 {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(text_LoginNickName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(text_LoginNombreAdministradores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(text_LoginClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(text_LoginClaveAdministradores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(boton_LoginIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,13 +293,85 @@ public class Principal extends Mi_Ventana_200412823 {
     }// </editor-fold>//GEN-END:initComponents
 
     private void boton_LoginIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_LoginIniciarActionPerformed
-        // TODO add your handling code here:
+        try {
+            miConexion.holaMundo(text_LoginNombreAdministradores);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_boton_LoginIniciarActionPerformed
 
     private void boton_LoginSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_LoginSignUpActionPerformed
-        // TODO add your handling code here:
+        dialogo_Administrador.setLocationRelativeTo(null);
+        dialogo_Administrador.show();
     }//GEN-LAST:event_boton_LoginSignUpActionPerformed
 
+    private void dialogo_AdministradorWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_dialogo_AdministradorWindowOpened
+        dialogo_Administrador.getContentPane().setBackground(new Color(0,0,0));
+    }//GEN-LAST:event_dialogo_AdministradorWindowOpened
+
+    private void boton_NewAeropuertoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_NewAeropuertoCancelarActionPerformed
+        limpiarTextosNewAeropuerto();
+        dialogo_Administrador.dispose();
+    }//GEN-LAST:event_boton_NewAeropuertoCancelarActionPerformed
+
+    private void boton_NewAeropuertoGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_NewAeropuertoGuardarActionPerformed
+        if (!text_NewAeropuertoNombreAero.getText().isEmpty()&& !text_NewAeropuertoPassword.getText().isEmpty()&&! text_NewAeropuertoPais.getText().isEmpty()){
+            int n = JOptionPane.showConfirmDialog(dialogo_Administrador, "Los datos son correctos?", "Confirme los datos",	JOptionPane.YES_NO_OPTION);
+            if (n==JOptionPane.YES_OPTION){
+                datosNewAeropuerto(text_NewAeropuertoNombreAero.getText(), text_NewAeropuertoPassword.getText(), text_NewAeropuertoPais.getText());
+            }
+            else if(n==JOptionPane.NO_OPTION){
+                limpiarTextosNewAeropuerto();
+            }
+            else {
+                System.out.println("No se que paso");
+            }
+        }
+        else {
+            String message = "Todos los datos son obligatorios";
+            JOptionPane.showMessageDialog(dialogo_Administrador, message, "Warning", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_boton_NewAeropuertoGuardarActionPerformed
+
+    private void limpiarTextosLoginAeropuerto(){
+        text_LoginNombreAdministradores.setText("");
+        text_LoginClaveAdministradores.setText("");
+    }
+    
+    private void limpiarTextosNewAeropuerto(){
+        text_NewAeropuertoNombreAero.setText("");
+        text_NewAeropuertoPais.setText("");
+        text_NewAeropuertoPassword.setText("");
+    }
+    
+    private boolean datosNewAeropuerto(String nombre, String Passw, String Pais){
+        if (!nombre.isEmpty()&&!Passw.isEmpty()&&!Pais.isEmpty()){
+            try {
+                miConexion.crearAeropuerto(nombre, Passw, Pais);
+                limpiarTextosNewAeropuerto();
+                return true;
+            } 
+            catch (IOException ex) {                
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);                
+                limpiarTextosNewAeropuerto();
+                return false;
+            }            
+        }
+        else{
+            return false;
+        }
+    }
+    
+    private boolean datosLoguear(String NombreAero, String Passs){
+        if(!NombreAero.isEmpty()&&!Passs.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -211,11 +424,21 @@ public class Principal extends Mi_Ventana_200412823 {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton boton_LoginIniciar;
     private javax.swing.JButton boton_LoginSignUp;
+    private javax.swing.JButton boton_NewAeropuertoCancelar;
+    private javax.swing.JButton boton_NewAeropuertoGuardar;
+    private javax.swing.JDialog dialogo_Administrador;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField text_LoginClave;
-    private javax.swing.JTextField text_LoginNickName;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPasswordField text_LoginClaveAdministradores;
+    private javax.swing.JTextField text_LoginNombreAdministradores;
+    private javax.swing.JTextField text_NewAeropuertoNombreAero;
+    private javax.swing.JTextField text_NewAeropuertoPais;
+    private javax.swing.JPasswordField text_NewAeropuertoPassword;
     // End of variables declaration//GEN-END:variables
 }
